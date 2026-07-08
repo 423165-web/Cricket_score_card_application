@@ -119,6 +119,6 @@ jobs:
         with:
           context: .
           push: true
-hooA          tags: |
+          tags: |
             patnamkarthik/cricket-score-app:${{ github.sha }}
             patnamkarthik/cricket-score-app:latest
