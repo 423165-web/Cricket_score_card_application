@@ -2,10 +2,22 @@
   "name": "Cricket Score App",
   "short_name": "CricketScore",
   "start_url": ".",
+  "id": "/cricket-score-app/",
+  "lang": "en",
+  "dir": "ltr",
+  "display_override": ["window-controls-overlay"],
+  "scope": ".",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#007bff",
+  "background_color": "#f0f2f5",
+  "scope_extensions": [
+    { "origin": "*.crickhero.com" },
+    { "origin": "https://crickhero.net" }
+  ],
+  "orientation": "portrait",
+  "theme_color": "#00ff00",
   "description": "A simple app to keep track of cricket scores.",
+  "categories": ["sports", "entertainment", "utilities"],
+  "iarc_rating_id": "your-iarc-rating-id-here",
   "icons": [
     {
       "src": "images/icon-192.png",
@@ -16,6 +28,35 @@
       "src": "images/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "images/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Start New Match",
+      "short_name": "New Match",
+      "description": "Jump right into setting up a new cricket match",
+      "url": "NewMatch.html",
+      "icons": [{ "src": "images/icon-new-match.png", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "images/screenshot-livescoring.png",
+      "type": "image/png",
+      "sizes": "1080x1920",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "images/screenshot-scorecard.png",
+      "type": "image/png",
+      "sizes": "1280x800",
+      "form_factor": "wide"
     }
   ]
 }
