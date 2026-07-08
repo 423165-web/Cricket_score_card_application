@@ -1,0 +1,9 @@
+node_modules
+cypress
+package.json
+package-lock.json
+jest.config.js
+*.test.js
+.git
+.gitignore
+Dockerfile

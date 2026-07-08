@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Players</title>
+
+    <link rel="stylesheet" href="SelectPlayers.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Select Opening Players</h1>
+
+        <form id="selectPlayersForm">
+
+            <!-- Batting Team Section -->
+            <div class="team-section">
+                <h2 id="battingTeamName">Batting Team</h2>
+
+                <div class="input-box">
+                    <label for="batsman1">Opening Batsman 1</label>
+                    <select id="batsman1" name="batsman1" required></select>
+                </div>
+
+                <div class="input-box">
+                    <label for="batsman2">Opening Batsman 2</label>
+                    <select id="batsman2" name="batsman2" required></select>
+                </div>
+
+                <div class="input-box">
+                    <label>Who is on strike?</label>
+                    <div class="striker-selection">
+                        <label class="striker-label">
+                            <input type="radio" name="striker" id="striker1Radio" value="0" required checked>
+                            <span id="striker1Name">Batsman 1</span>
+                        </label>
+                        <label class="striker-label">
+                            <input type="radio" name="striker" id="striker2Radio" value="1">
+                            <span id="striker2Name">Batsman 2</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bowling Team Section -->
+            <div class="team-section">
+                <h2 id="bowlingTeamName">Bowling Team</h2>
+                <div class="input-box">
+                    <label for="bowler">Opening Bowler</label>
+                    <select id="bowler" name="bowler" required></select>
+                </div>
+            </div>
+
+            <button type="submit">
+                Start Innings 🏏
+            </button>
+
+        </form>
+
+    </div>
+    <script src="SelectPlayers.js"></script>
+</body>
+
+</html>

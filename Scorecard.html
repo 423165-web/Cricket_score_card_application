@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Scorecard</title>
+    <link rel="stylesheet" href="Scorecard.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Match Scorecard</h1>
+            <p id="matchResult" class="match-result"></p>
+        </header>
+
+        <main id="scorecard-container">
+            <!-- Scorecards will be dynamically inserted here -->
+        </main>
+
+        <section class="awards">
+            <h2>Match Awards</h2>
+            <div class="award-list">
+                <div class="award">
+                    <h3>Player of the Match</h3>
+                    <p id="potm"></p>
+                </div>
+                <div class="award">
+                    <h3>Highest Scorer</h3>
+                    <p id="highestScorer"></p>
+                </div>
+                <div class="award">
+                    <h3>Best Bowling Figures</h3>
+                    <p id="bestBowler"></p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <button id="backToHomeBtn">Back to Home</button>
+        </footer>
+    </div>
+
+    <script src="Scorecard.js"></script>
+</body>
+
+</html>

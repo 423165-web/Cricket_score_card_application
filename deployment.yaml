@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cricket-score-app-deployment
+spec:
+  replicas: 2 # Run 2 instances for high availability
+  selector:
+    matchLabels:
+      app: cricket-score-app
+  template:
+    metadata:
+      labels:
+        app: cricket-score-app
+    spec:
+      containers:
+      - name: cricket-score-app
+        # Use the image you pushed to Docker Hub
+        image: docker.io/patnamkarthik/cricket-score-app:latest
+        ports:
+        - containerPort: 80 # The port Nginx is listening on inside the container
+        # Health check to see if the container is running
+        livenessProbe:
+          httpGet:
+            path: / # Check the root path of the web server
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        # Health check to see if the app is ready to receive traffic
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources:
+          requests: # Reserve resources
+            cpu: "100m" # 0.1 CPU core
+            memory: "64Mi" # 64 Megabytes
+          limits: # Max resources the container can use
+            cpu: "200m"
+            memory: "128Mi"

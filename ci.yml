@@ -1,0 +1,124 @@
+# This is the name of your GitHub Actions workflow.
+name: Cricket Score App CI
+
+# This section defines when the workflow should run.
+on:
+  # Run on every push to the 'main' branch.
+  push:
+    branches: [ main ]
+  # Also run on every pull request that targets the 'main' branch.
+  pull_request:
+    branches: [ main ]
+
+# This section defines the jobs to be executed.
+jobs:
+  # We have one job named 'test'.
+  test:
+    name: Run Unit and E2E Tests
+    # The job will run on the latest version of Ubuntu provided by GitHub.
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out your repository code so the workflow can access it.
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up the Node.js environment.
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Use Node.js version 20
+
+      # Step 3: Install all project dependencies from package-lock.json.
+      # 'npm ci' is faster and more reliable for CI environments than 'npm install'.
+      - name: Install dependencies
+        run: npm ci
+
+      # Step 4: Run the Jest unit tests.
+      - name: Run unit tests
+        run: npm run test:unit
+
+      # Step 5: Run the Cypress E2E tests.
+      # This uses the official Cypress GitHub Action, which simplifies setup.
+      # It will automatically start a web server for your static files before running the tests.
+      - name: Run E2E tests
+        uses: cypress-io/github-action@v6
+        with:
+          # The command to start your web server.
+          start: npm run start
+          # The URL Cypress should wait for before starting tests.
+          wait-on: 'http://localhost:8080'
+          # The command to run the Cypress tests.
+          command: npm run test:e2e
+          # Run tests in the browser of your choice.
+          browser: chrome
+
+      # Step 6: Upload Jest test report as an artifact.
+      # This runs even if previous steps fail, to ensure reports are always available.
+      - name: Upload Unit Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jest-unit-test-report
+          path: jest-reports/
+
+      # Step 7: Upload Cypress E2E test report as an artifact.
+      - name: Upload E2E Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-e2e-test-report
+          path: cypress/reports/
+
+  # This is the new deployment job.
+  deploy:
+    name: Deploy to GitHub Pages
+    # This job depends on the 'test' job. It will only run if 'test' succeeds.
+    needs: test
+    # Grant permissions for the workflow to write to GitHub Pages.
+    permissions:
+      pages: write
+      id-token: write
+    # Define the deployment environment.
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload the entire directory, as it's a static site.
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  # This new job builds and pushes your Docker image to Docker Hub.
+  build-and-push-docker:
+    name: Build and Push Docker Image
+    # It also runs only after the 'test' job succeeds.
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+hooA          tags: |
+            patnamkarthik/cricket-score-app:${{ github.sha }}
+            patnamkarthik/cricket-score-app:latest

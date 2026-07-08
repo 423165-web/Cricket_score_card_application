@@ -1,0 +1,229 @@
+Complete CrickHero Flow
+
+                    HOME PAGE
+                        │
+        ┌───────────────┼───────────────┐
+        │               │               │
+      Toss          New Match      Previous Matches
+                        │
+                        ▼
+             Create New Match
+                        │
+                        ▼
+                 Match Details
+        ┌──────────────────────────────┐
+        │ Team 1                       │
+        │ Team 2                       │
+        │ Overs                        │
+        │ Venue                        │
+        │ Match Type                   │
+        └──────────────────────────────┘
+                        │
+                 Continue
+                        │
+                        ▼
+                   Toss Page
+
+
+
+Step 1: New Match
+
+---------------------------------------
+            🏏 Create Match
+
+Team 1 Name
+[________________________]
+
+Team 2 Name
+[________________________]
+
+Overs
+[_______]
+
+Venue
+[________________________]
+
+
+          Continue →
+---------------------------------------
+
+Step 2: Toss
+
+---------------------------------------
+
+           🪙 Toss
+
+Team 1 : SRH
+Team 2 : CSK
+
+Who won the Toss?
+
+( ) SRH
+( ) CSK
+
+Decision
+
+( ) Bat
+( ) Bowl
+
+      Start Match →
+---------------------------------------
+
+ex: 
+SRH won the toss.
+
+Decision : Bat
+
+Batting Team = SRH
+Bowling Team = CSK
+
+Step 3: Select Players
+---------------------------------------
+
+🏏 Batting Team
+
+Select Opening Batsman
+
+Dropdown
+
+✓ Travis Head
+
+Dropdown
+
+✓ Abhishek Sharma
+
+Bowling Team
+
+Select Bowler
+
+Dropdown
+
+✓ Pathirana
+
+      Start Innings
+---------------------------------------
+
+Step 4: Live Scoring
+----------------------------------------
+
+SRH 52 / 1
+
+Overs : 5.3
+
+Run Rate : 9.45
+
+Batsmen
+
+Head        32 (20)
+Abhishek    18 (12)
+
+Bowler
+
+Pathirana
+
+----------------------------------------
+
+Runs
+
+[0] [1] [2] [3]
+
+[4] [6]
+
+Extras
+
+[Wide]
+[No Ball]
+[Bye]
+[Leg Bye]
+
+Dismissal
+
+[Wicket]
+
+Undo
+
+Finish Over
+
+----------------------------------------
+
+Step 5: New Over
+Over Completed
+
+Choose New Bowler
+
+Dropdown
+
+Continue
+	
+Step 6: End Innings
+--------------------------------
+
+Innings Finished
+
+Score
+
+186 / 6
+
+Overs
+
+20.0
+
+Start Second Innings
+
+--------------------------------
+
+Step 7: Second Innings
+Exactly the same scoring page.
+
+Step 8: Match Result
+
+---------------------------------
+
+🏆 Match Finished
+
+CSK won by 4 wickets
+
+Player of Match
+
+Travis Head
+
+Highest Score
+
+76 (42)
+
+Best Bowling
+
+3/25
+
+Save Match
+
+---------------------------------
+
+Step 9: Previous Matches
+---------------------------------
+
+Previous Matches
+
+SRH vs CSK
+
+186/6
+
+181/8
+
+Winner
+
+SRH
+
+------------------------
+
+MI vs RCB
+
+------------------------
+
+KKR vs RR
+
+------------------------
+
+Click to View Scorecard
+
+---------------------------------

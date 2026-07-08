@@ -1,0 +1,192 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary-color: #00c853;
+    --primary-glow: #00ff88;
+    --secondary-glow: #2196f3;
+    --text-color: white;
+    --bg-glass: rgba(255, 255, 255, .12);
+    --bg-glass-light: rgba(255, 255, 255, .08);
+    --border-glass: rgba(255, 255, 255, .2);
+    --border-radius-lg: 20px;
+    --border-radius-md: 15px;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family: 'Poppins', sans-serif;
+
+    background:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
+    url("Images/cricket.jpg");
+
+    background-size:cover;
+    background-position:center;
+}
+
+.container{
+    max-width:550px;
+    width: 90%;
+    padding:40px;
+    border-radius:var(--border-radius-lg);
+
+    background:var(--bg-glass);
+    backdrop-filter:blur(15px);
+
+    border:1px solid var(--border-glass);
+
+    box-shadow:0 10px 30px rgba(0,0,0,.5);
+}
+
+h1{
+    text-align:center;
+    color:white;
+    margin-bottom:2.5rem;
+    font-size:40px;
+}
+
+.section{
+    margin-bottom:35px;
+}
+
+.section h2{
+    color:var(--text-color);
+    margin-bottom:20px;
+}
+
+/* Hide radio buttons */
+
+input[type="radio"]{
+    display:none;
+}
+
+/* Team Cards */
+
+.team-card{
+
+    display:block;
+
+    padding:18px;
+
+    margin-bottom:15px;
+
+    text-align:center;
+
+    color:var(--text-color);
+
+    font-size:20px;
+
+    border-radius:var(--border-radius-md);
+
+    background:var(--bg-glass-light);
+
+    border:2px solid transparent;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.team-card:hover{
+
+    transform:scale(1.03);
+
+    border-color:var(--primary-glow);
+
+    box-shadow:0 0 15px var(--primary-glow);
+}
+
+/* Selected Card */
+
+input[type="radio"]:checked + .team-card{
+
+    background:var(--primary-color);
+
+    color:var(--text-color);
+
+    border-color:white;
+
+    box-shadow:0 0 20px var(--primary-glow);
+}
+
+/* Decision Buttons */
+
+.decision{
+
+    display:flex;
+
+    gap:20px;
+}
+
+.decision label{
+
+    flex:1;
+
+    text-align:center;
+
+    padding:15px;
+
+    color:var(--text-color);
+
+    background:var(--bg-glass-light);
+
+    border-radius:var(--border-radius-md);
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.decision label:hover{
+
+    transform:scale(1.05);
+
+    box-shadow:0 0 15px var(--secondary-glow);
+}
+
+.decision input[type="radio"]:checked + span{
+
+    color:var(--primary-glow);
+
+    font-weight:bold;
+}
+
+/* Start Button */
+
+button{
+
+    width:100%;
+
+    padding:15px;
+
+    margin-top:20px;
+
+    border:none;
+
+    border-radius:50px;
+
+    background:linear-gradient(135deg, var(--primary-color), #009624);
+
+    color:var(--text-color);
+
+    font-size:20px;
+
+    cursor:pointer;
+
+    transition: transform .3s, box-shadow .3s;
+}
+
+button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 0 20px var(--primary-glow);
+}

@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+    --bg-primary: #f4f4f9;
+    --bg-secondary: #ffffff;
+    --border-color: #e0e0e0;
+    --text-primary: #333;
+    --text-secondary: #666;
+    --header-bg: #2c3e50;
+    --accent-color: #3498db;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--bg-secondary);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+header {
+    background-color: var(--header-bg);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.match-result {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    color: #bdc3c7;
+}
+
+.innings-card {
+    margin: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.innings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.innings-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.innings-header .score {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+thead {
+    background-color: #ecf0f1;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.batsman-name {
+    font-weight: 500;
+}
+
+.batsman-name-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.edit-player-btn {
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+td:hover .edit-player-btn {
+    visibility: visible;
+    opacity: 1;
+}
+
+.dismissal {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.fow {
+    padding: 15px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.awards {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-top: 1px solid var(--border-color);
+}
+
+.awards h2 {
+    text-align: center;
+    margin-top: 0;
+    color: var(--header-bg);
+}
+
+.award-list {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.award h3 {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+}
+
+.award p {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+footer {
+    padding: 20px;
+    text-align: center;
+}
+
+footer button {
+    padding: 12px 30px;
+    font-size: 1rem;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+footer button:hover {
+    background-color: #2980b9;
+}

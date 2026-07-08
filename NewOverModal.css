@@ -1,0 +1,17 @@
+.new-over-modal .modal-content h2 {
+    color: var(--accent-blue);
+}
+
+.new-over-modal #confirmNewOverBtn {
+    background-color: var(--accent-blue);
+    color: white;
+}
+
+.new-over-modal #confirmNewOverBtn:hover {
+    background-color: #2980b9;
+}
+
+.new-over-modal .input-box {
+    text-align: left;
+    margin-top: 20px;
+}

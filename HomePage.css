@@ -1,0 +1,163 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    background:
+        linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+        url("https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1600&q=80");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+/* Main Heading */
+
+h1{
+    color:white;
+    font-size:60px;
+    margin-bottom:50px;
+    letter-spacing:2px;
+    text-shadow:3px 3px 10px black;
+}
+
+/* Glass Card */
+
+.buttons{
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+
+    padding:40px 50px;
+
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(15px);
+    border-radius:20px;
+
+    border:1px solid rgba(255,255,255,.25);
+
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+
+/* Buttons */
+button{
+    position: relative;
+    width: 260px;
+    height: 60px;
+
+    border: none;
+    outline: none;
+    border-radius: 50px;
+
+    background: #111;
+    color: white;
+
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    transition: 0.3s;
+}
+
+/* Rainbow Glowing Border */
+
+button::before{
+    content: "";
+    position: absolute;
+
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+
+    background: linear-gradient(
+        45deg,
+        #00ff00,
+        #00ffff,
+        #007bff,
+        #ff00ff,
+        #ff0000,
+        #ffff00,
+        #00ff00
+    );
+
+    background-size: 400%;
+
+    z-index: -2;
+
+    border-radius: 50px;
+
+    animation: glowing 8s linear infinite;
+
+    filter: blur(8px);
+}
+
+/* Button Background */
+
+button::after{
+    content: "";
+    position: absolute;
+
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+
+    background: #1b1b1b;
+
+    border-radius: 50px;
+
+    z-index: -1;
+}
+
+/* Hover */
+
+button:hover{
+    color: #00ff00;
+    transform: translateY(-5px) scale(1.05);
+
+    box-shadow: 0 0 20px #00ff00,
+                0 0 40px #00ff00,
+                0 0 60px #00ff00;
+}
+
+/* Click */
+
+button:active{
+    transform: scale(0.95);
+}
+
+/* Animation */
+
+@keyframes glowing{
+
+    0%{
+        background-position:0 0;
+    }
+
+    50%{
+        background-position:400% 0;
+    }
+
+    100%{
+        background-position:0 0;
+    }
+
+}

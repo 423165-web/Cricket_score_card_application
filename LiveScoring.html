@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Scoring</title>
+    <link rel="stylesheet" href="LiveScoring.css">
+    <link rel="stylesheet" href="WicketModal.css">
+    <link rel="stylesheet" href="NewOverModal.css">
+    <link rel="stylesheet" href="ExtraRunModal.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Scoreboard Header -->
+        <header class="scoreboard">
+            <div class="team-score">
+                <h1 id="battingTeamName">TEAM</h1>
+                <p id="scoreDisplay">0 / 0</p>
+            </div>
+            <div class="match-info">
+                <div>
+                    <span>Overs</span>
+                    <p id="oversDisplay">0.0</p>
+                </div>
+                <div>
+                    <span>Run Rate</span>
+                    <p id="runRateDisplay">0.00</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Players Info -->
+        <section class="players-info">
+            <div class="batsmen">
+                <h2>Batsmen</h2>
+                <div class="player" id="batsman1">
+                    <span class="player-name">Batsman 1</span>
+                    <span class="player-score">0 (0)</span>
+                </div>
+                <div class="player" id="batsman2">
+                    <span class="player-name">Batsman 2</span>
+                    <span class="player-score">0 (0)</span>
+                </div>
+            </div>
+            <div class="bowler">
+                <h2>Bowler</h2>
+                <div class="player" id="currentBowler">
+                    <span class="player-name">Bowler</span>
+                    <span class="player-figures">0-0</span>
+                </div>
+                <div class="this-over">
+                    <span>This Over:</span>
+                    <div id="thisOverSummary" class="over-summary"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fall of Wickets -->
+        <section id="fowSection" class="fall-of-wickets hidden">
+            <h2>Fall of Wickets</h2>
+            <div id="fowList" class="fow-list"></div>
+        </section>
+
+        <!-- Scoring Controls -->
+        <section class="controls">
+            <div class="control-group">
+                <h3>Runs</h3>
+                <div class="buttons">
+                    <button data-run="0">0</button>
+                    <button data-run="1">1</button>
+                    <button data-run="2">2</button>
+                    <button data-run="3">3</button>
+                    <button data-run="4">4</button>
+                    <button data-run="6">6</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h3>Extras</h3>
+                <div class="buttons">
+                    <button id="wideBtn">Wide</button>
+                    <button id="noBallBtn">No Ball</button>
+                    <button id="byeBtn">Bye</button>
+                    <button id="legByeBtn">Leg Bye</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h3>Dismissal</h3>
+                <div class="buttons">
+                    <button id="wicketBtn" class="wicket">Wicket</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <footer class="actions">
+            <button id="undoBtn">Undo</button>
+            <button id="finishOverBtn">Finish Over</button>
+        </footer>
+
+    </div>
+
+    <!-- Wicket Modal -->
+    <div id="wicketModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Wicket Details</h2>
+            <form id="wicketForm">
+                <div class="input-box">
+                    <label for="newBatsmanSelect">New Batsman</label>
+                    <select id="newBatsmanSelect" required></select>
+                </div>
+                <div class="input-box">
+                    <label for="batsmanOutSelect">Batsman Out</label>
+                    <select id="batsmanOutSelect" required></select>
+                </div>
+                <div class="modal-buttons">
+                    <div class="input-box dismissal-type-box">
+                        <label for="dismissalTypeSelect">Dismissal Type</label>
+                        <select id="dismissalTypeSelect" required></select>
+                    </div>
+                    <button type="button" id="cancelWicketBtn">Cancel</button>
+                    <button type="submit" id="confirmWicketBtn">Confirm Wicket</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Extra Run Modal (for Byes/Leg Byes) -->
+    <div id="extraRunModal" class="modal-overlay">
+        <div class="modal-content extra-run-modal">
+            <h2 id="extraRunModalTitle">Extra Runs</h2>
+            <div class="run-buttons">
+                <button data-extra-run="1">1</button>
+                <button data-extra-run="2">2</button>
+                <button data-extra-run="3">3</button>
+                <button data-extra-run="4">4</button>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" id="cancelExtraRunBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Over Modal -->
+    <div id="newOverModal" class="modal-overlay new-over-modal">
+        <div class="modal-content">
+            <h2>Over Completed!</h2>
+            <form id="newOverForm">
+                <div class="input-box">
+                    <label for="newBowlerSelect">Choose New Bowler</label>
+                    <select id="newBowlerSelect" required></select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" id="confirmNewOverBtn">Continue</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="LiveScoring.js"></script>
+</body>
+
+</html>

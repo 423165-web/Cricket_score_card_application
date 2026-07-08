@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Match</title>
+
+    <link rel="stylesheet" href="NewMatch.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🏏 Create New Match</h1>
+
+        <form>
+
+            <div class="input-box">
+                <label for="team1">Team 1 Name</label>
+                <input type="text" id="team1" placeholder="Ex: Sunrisers Hyderabad" required>
+            </div>
+
+            <div class="input-box">
+                <label for="team2">Team 2 Name</label>
+                <input type="text" id="team2" placeholder="Ex: Chennai Super Kings" required>
+            </div>
+
+            <div class="input-box">
+                <label for="team1Players">Team 1 Players (comma-separated)</label>
+                <textarea id="team1Players" rows="3" placeholder="Player 1, Player 2, Player 3..."></textarea>
+            </div>
+
+            <div class="input-box">
+                <label for="team2Players">Team 2 Players (comma-separated)</label>
+                <textarea id="team2Players" rows="3" placeholder="Player A, Player B, Player C..."></textarea>
+            </div>
+
+            <div class="input-box">
+                <label for="overs">Number of Overs</label>
+                <input type="number" id="overs" min="1" max="50" placeholder="20" required>
+            </div>
+
+            <div class="input-box">
+                <label for="venue">Venue</label>
+                <input type="text" id="venue" placeholder="Rajiv Gandhi Stadium">
+            </div>
+
+            <div class="input-box">
+                <label for="date">Match Date</label>
+                <input type="date" id="date">
+            </div>
+
+            <button type="button" onclick="GotoToss()">
+                Continue →
+            </button>
+
+        </form>
+
+    </div>
+    <script src="NewMatch.js"></script>
+</body>
+
+</html>

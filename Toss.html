@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toss</title>
+
+    <link rel="stylesheet" href="Toss.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1> Match Toss</h1>
+
+        <form id="tossForm">
+
+            <div class="section">
+                <h2>Who won the Toss?</h2>
+
+                <!-- Team 1 -->
+                <input type="radio" id="team1" name="tossWinner" value="Team1" required>
+                <label class="team-card" id="team1Label" for="team1"></label>
+
+                <!-- Team 2 -->
+                <input type="radio" id="team2" name="tossWinner" value="Team2">
+                <label class="team-card" id="team2Label" for="team2"></label>
+
+            </div>
+
+            <div class="section">
+
+                <h2>Toss Decision</h2>
+
+                <div class="decision">
+
+                    <label>
+                        <input type="radio" name="decision" value="Bat" required>
+                        <span>🏏 Bat First</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" name="decision" value="Bowl">
+                        <span>🥎 Bowl First</span>
+                    </label>
+
+                </div>
+
+            </div>
+
+            <button type="submit">
+                Start Match →
+            </button>
+
+        </form>
+
+    </div>
+
+    <script src="Toss.js"></script>
+
+</body>
+
+</html>

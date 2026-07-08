@@ -1,0 +1,102 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.modal-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: #2a2a2a;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s;
+}
+
+.modal-overlay.visible .modal-content {
+    transform: scale(1);
+}
+
+.modal-content h2 {
+    color: #e74c3c;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.modal-content .input-box {
+    margin-bottom: 20px;
+}
+
+.modal-content label {
+    display: block;
+    color: #aaa;
+    margin-bottom: 8px;
+}
+
+.modal-content select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background-color: #3e3e3e;
+    color: #f1f1f1;
+    font-size: 16px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.modal-buttons button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#confirmWicketBtn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+#confirmWicketBtn:hover {
+    background-color: #c0392b;
+}
+
+#cancelWicketBtn {
+    background-color: #555;
+    color: white;
+}
+
+#cancelWicketBtn:hover {
+    background-color: #777;
+}
+
+.dismissal-type-box {
+    flex: 1.5; /* Give it more space */
+    margin-bottom: 0 !important;
+    text-align: left;
+}

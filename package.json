@@ -1,0 +1,15 @@
+{
+  "name": "cricketscore",
+  "version": "1.0.0",
+  "description": "",
+  "main": "full_match_flow.cy.js",
+  "scripts": {
+    "test": "npm run test:unit",
+    "test:unit": "jest",
+    "test:e2e": "cypress run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
