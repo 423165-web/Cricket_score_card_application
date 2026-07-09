@@ -1,0 +1,21 @@
+# Use an official Node.js runtime as a parent image
+FROM node:20-slim
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install app dependencies using 'npm ci' for a clean, reproducible install
+RUN npm ci
+
+# Copy the rest of your app's source code
+COPY . .
+
+# Run unit tests
+RUN npm run test:unit
+
+# The command to run E2E tests (will be executed from the CI script)
+# We need to specify a command to run, otherwise the build will fail if there are no further steps.
+CMD ["npm", "run", "test:e2e"]
