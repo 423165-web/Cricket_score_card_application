@@ -1,0 +1,24 @@
+On the day 08-07-2026 i found a tool PWA means Progressive Web App. The functionality of this application is to generate APK file for CRICKET SCORE BOARD APPLICAION. 
+How to use this tool
+1)Go to PWABuilder: Open your web browser and navigate to www.pwabuilder.com.
+2)Enter Your URL: In the input field on the homepage, enter the URL of your deployed cricket score app and click "Start".
+3)Review the Manifest: PWABuilder will analyze your web app's manifest.json file. It will show you a report card on how well your PWA is configured for packaging. You can make adjustments to your manifest.json and redeploy if needed.
+(the URL is you GitHub repository link)
+
+4)Package for Android: Once you are ready, click "Next" or navigate to the "Package" section. Find the "Android" option and click the "Generate" or "Package" button.
+Download: PWABuilder will work its magic and provide you with a downloadable zip file. This file contains the entire Android project source code, including a pre-generated APK file that you can use for testing.
+
+After all this process, I got the APK file of my application, but there is something wrong with the application because of the ERROR i redirect to the GitHub repo. So I decided to clear all the errors that occurred in the PWA builder.
+1)Service Workers sit between your web app and the network. They are intended to enable the creation of effective offline experiences, intercept network requests, and take appropriate action based on whether the network is available. They also allow access to push notifications and background sync APIs.
+
+2)The description manifest member is used to explain the core features or functionality of your web application. This text helps users 
+understand your app's purpose. This string can show up in the browser's PWA installation dialog for your app. 
+
+3)The screenshots member defines an array of screenshots intended to showcase your app.
+
+
+4)The theme_color sets the color of the app's title bar and can be reflected in the app's preview in task switchers.
+
+5)The background_color manifest member is used to specify an initial background color for your web application. This color appears in the application window before your application's stylesheets have loaded.
+
+6)The orientation member is a string that determines the developers' preferred orientation for their PWA. The orientation can be any of the following: any, natural, landscape, landscape-primary, landscape-secondary, portrait, portrait-primary, portrait-secondary

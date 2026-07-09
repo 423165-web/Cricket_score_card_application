@@ -14,8 +14,10 @@ spec:
     spec:
       containers:
       - name: cricket-score-app
-        # Use the image you pushed to Docker Hub
-        image: docker.io/patnamkarthik/cricket-score-app:latest
+        # Best Practice: Use an immutable tag like a git SHA instead of 'latest'.
+        # This value would typically be updated by your CI/CD pipeline during deployment.
+        # For example: docker.io/patnamkarthik/cricket-score-app:a1b2c3d4
+        image: docker.io/patnamkarthik/cricket-score-app:latest # Placeholder - see comment
         ports:
         - containerPort: 80 # The port Nginx is listening on inside the container
         # Health check to see if the container is running

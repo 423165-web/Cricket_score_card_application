@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => { //NOSONAR
+document.addEventListener("DOMContentLoaded", () => {
     const matchData = localStorage.getItem("match");
 
     if (!matchData) {
@@ -7,6 +7,14 @@ document.addEventListener("DOMContentLoaded", () => { //NOSONAR
     }
 
     let match = JSON.parse(matchData);
+
+    // --- Modal Elements ---
+    const editNameModal = document.getElementById("editNameModal");
+    const editNameForm = document.getElementById("editNameForm");
+    const newPlayerNameInput = document.getElementById("newPlayerNameInput");
+    const cancelEditNameBtn = document.getElementById("cancelEditNameBtn");
+    const editNameModalTitle = document.getElementById("editNameModalTitle");
+
     const scorecardContainer = document.getElementById("scorecard-container");
 
     function generateBowlingTable(bowlingFigures) {
@@ -155,18 +163,31 @@ document.addEventListener("DOMContentLoaded", () => { //NOSONAR
         renderScorecards();
     }
 
+    function handleFormSubmit(event) {
+        event.preventDefault();
+        const oldFullName = editNameForm.dataset.editingPlayer;
+        const newName = newPlayerNameInput.value.trim();
+        const oldShortName = oldFullName.split(' (')[0];
+
+        if (newName && newName !== oldShortName) {
+            updatePlayerNameInMatch(oldFullName, newName);
+        }
+        editNameModal.classList.remove('visible');
+    }
+
     function handleEditClick(event) {
         const target = event.target;
         if (target.classList.contains('edit-player-btn')) {
             const cell = target.closest('td');
             const oldFullName = cell.dataset.playerName;
             const oldShortName = oldFullName.split(' (')[0];
-
-            const newName = prompt(`Enter new name for ${oldShortName}:`, oldShortName);
-
-            if (newName && newName.trim() !== '' && newName.trim() !== oldShortName) {
-                updatePlayerNameInMatch(oldFullName, newName.trim());
-            }
+            
+            // Show the modal instead of a prompt
+            editNameModalTitle.textContent = `Edit name for ${oldShortName}`;
+            newPlayerNameInput.value = oldShortName;
+            editNameForm.dataset.editingPlayer = oldFullName; // Store which player is being edited
+            editNameModal.classList.add('visible');
+            newPlayerNameInput.focus(); // Automatically focus the input
         }
     }
 
@@ -179,6 +200,10 @@ document.addEventListener("DOMContentLoaded", () => { //NOSONAR
         scorecardContainer.removeEventListener('click', handleEditClick);
         scorecardContainer.addEventListener('click', handleEditClick);
     }
+
+    // --- Event Listeners for Modal ---
+    editNameForm.addEventListener('submit', handleFormSubmit);
+    cancelEditNameBtn.addEventListener('click', () => editNameModal.classList.remove('visible'));
 
     // Back to Home button
     document.getElementById("backToHomeBtn").addEventListener("click", () => {

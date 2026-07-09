@@ -38,31 +38,25 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('fetch', event => {
+  // Use a stale-while-revalidate strategy
   event.respondWith(
-    caches.match(event.request).then(cachedResponse => {
-      // Cache hit - return response
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-
-      // Not in cache - go to the network
-      return fetch(event.request).then(networkResponse => {
-        // Check if we received a valid response
-        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.match(event.request).then(cachedResponse => {
+        const fetchPromise = fetch(event.request).then(networkResponse => {
+          // Check if we received a valid response to cache
+          if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+            // IMPORTANT: Clone the response. A response is a stream
+            // and because we want the browser to consume the response
+            // as well as the cache consuming the response, we need
+            // to clone it so we have two streams.
+            const responseToCache = networkResponse.clone();
+            cache.put(event.request, responseToCache);
+          }
           return networkResponse;
-        }
-
-        // IMPORTANT: Clone the response. A response is a stream
-        // and because we want the browser to consume the response
-        // as well as the cache consuming the response, we need
-        // to clone it so we have two streams.
-        const responseToCache = networkResponse.clone();
-
-        caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, responseToCache);
         });
 
-        return networkResponse;
+        // Return the cached response immediately if available, otherwise wait for the network
+        return cachedResponse || fetchPromise;
       });
     })
   );

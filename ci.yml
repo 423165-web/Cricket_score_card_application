@@ -28,6 +28,25 @@ jobs:
           context: .
           file: ./Dockerfile.test # Specify the test Dockerfile
           push: false # We don't need to push this test image
+
+      # This step runs the Cypress E2E tests after the Docker build is successful.
+      # It uses the official Cypress GitHub Action, which handles starting a server
+      # and running tests against it in a headless browser.
+      - name: Run E2E tests
+        uses: cypress-io/github-action@v6
+        with:
+          # The command to start your web server.
+          start: npm run start
+          # The URL Cypress should wait for before starting tests.
+          wait-on: 'http://localhost:8080'
+          # The command to run the Cypress tests.
+          command: npm run test:e2e
+          # Run tests in the browser of your choice.
+          browser: chrome
+          # Record the test run on the Cypress Dashboard (optional)
+          # record: true
+        # env:
+          # CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           
       - name: Upload Unit Test Report
         if: always()

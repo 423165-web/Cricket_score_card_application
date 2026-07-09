@@ -7,11 +7,13 @@ function setupLiveScoring() {
         return;
     }
 
-    let match = JSON.parse(matchData);
+    // --- Centralized State Management ---
+    const state = {
+        match: JSON.parse(matchData),
+        history: [], // For the undo functionality
+    };
+    let match = state.match; // Keep reference for convenience, but avoid direct mutation
     let innings = match.currentInnings;
-    if (!innings.thisOver) innings.thisOver = []; // Safeguard: Initialize thisOver array
-    if (!innings.outBatsmen) innings.outBatsmen = []; // Safeguard: Initialize outBatsmen array
-    let history = []; // For the undo functionality
  
     // --- Element Selectors ---
     const battingTeamNameEl = document.getElementById("battingTeamName");
@@ -75,15 +77,31 @@ function setupLiveScoring() {
         updateFullDisplay();
         updateUndoButton();
     }
+    
+    /**
+     * The new central function for all state updates.
+     * It takes a new match object, updates the state, saves to localStorage, and refreshes the UI.
+     * @param {object} newMatchState - The complete new state for the match.
+     * @param {boolean} [saveToHistory=true] - Whether to save the *previous* state for undo.
+     */
+    function updateState(newMatchState, saveToHistory = true) {
+        if (saveToHistory) {
+            state.history.push(structuredClone(state.match));
+        }
+        state.match = newMatchState;
+        match = state.match; // Update local reference
+        innings = match.currentInnings; // Update innings reference
+        localStorage.setItem("match", JSON.stringify(state.match));
+        updateFullDisplay();
+    }
 
-    function updateFullDisplay() {
+    function updateFullDisplay() { // This function now only reads state and updates the DOM
         updateScoreDisplay();
         updateBatsmenDisplay();
         updateBowlerDisplay();
         updateFallOfWicketsDisplay();
         updateThisOverDisplay();
         checkForInningsEnd();
-        localStorage.setItem("match", JSON.stringify(match)); // Save state after every update
         updateUndoButton();
     }
 
@@ -153,11 +171,6 @@ function setupLiveScoring() {
     }
 
     // --- Scoring Logic ---
-    function saveStateForUndo() {
-        // Use structuredClone for a deep copy of the match object
-        history.push(structuredClone(match));
-    }
-
     function addBall() {
         const currentOver = innings.overs;
         const ballsInCurrentOver = Math.round((currentOver - Math.floor(currentOver)) * 10);
@@ -185,63 +198,68 @@ function setupLiveScoring() {
     }
 
     function handleRun(event) {
-        saveStateForUndo(); // Save state before making changes
-
         const runs = parseInt(event.target.dataset.run, 10);
-
+        
+        // Create a deep copy of the current state to modify.
+        const newMatchState = structuredClone(state.match);
+        const newInnings = newMatchState.currentInnings;
+        
         // Update totals
-        innings.score += runs;
-        innings.thisOver.push(runs.toString());
+        newInnings.score += runs;
+        newInnings.thisOver.push(runs.toString());
  
         // Update batsman
-        const striker = innings.batsmen[innings.strikerIndex];
+        const striker = newInnings.batsmen[newInnings.strikerIndex];
         striker.runs += runs;
         striker.balls += 1;
  
         // Update bowler
-        const bowlerStats = innings.bowlingFigures[innings.currentBowlerName];
+        const bowlerStats = newInnings.bowlingFigures[newInnings.currentBowlerName];
         bowlerStats.runs += runs;
  
-        // Update overs
-        const overCompleted = addBall();
+        // Temporarily set global innings to the new state to use helper functions
+        innings = newInnings;
+        const overCompleted = addBall(); // This function mutates the `innings` object it reads
  
         // Change strike for odd runs
         if (runs % 2 !== 0) {
-            innings.strikerIndex = 1 - innings.strikerIndex; // Toggles between 0 and 1
+            newInnings.strikerIndex = 1 - newInnings.strikerIndex; // Toggles between 0 and 1
         }
  
         addBallToBowler();
+        
+        // Commit the new state
+        updateState(newMatchState);
+
         if (overCompleted) {
             openNewOverModal();
-        } else {
-            updateFullDisplay();
         }
-        updateFullDisplay();
     }
 
     function handleExtra(type) {
-        saveStateForUndo();
-
-        innings.score += 1; // All extras add 1 to the score
+        const newMatchState = structuredClone(state.match);
+        const newInnings = newMatchState.currentInnings;
+        newInnings.score += 1; // All extras add 1 to the score
 
         if (type === 'wide') {
-            const bowlerStats = innings.bowlingFigures[innings.currentBowlerName];
+            const bowlerStats = newInnings.bowlingFigures[newInnings.currentBowlerName];
             bowlerStats.runs += 1;
-            innings.thisOver.push('wd');
+            newInnings.thisOver.push('wd');
             // Wides don't count as a ball faced or a ball in the over
         } else if (type === 'noBall') {
-            const bowlerStats = innings.bowlingFigures[innings.currentBowlerName];
+            const bowlerStats = newInnings.bowlingFigures[newInnings.currentBowlerName];
             bowlerStats.runs += 1;
-            innings.thisOver.push('nb');
+            newInnings.thisOver.push('nb');
             // No-ball is bowled, but batsman can score off it.
-            const striker = innings.batsmen[innings.strikerIndex];
+            innings = newInnings; // Temporarily set for addBall
             addBall();
         } else if (type === 'bye' || type === 'legBye') {
             // Logic for these is handled by the modal
             openExtraRunModal(type);
+            return; // Return here as the modal will handle the state update
         }
 
-        updateFullDisplay();
+        updateState(newMatchState);
     }
 
     function openWicketModal() {
@@ -294,49 +312,55 @@ function setupLiveScoring() {
 
     function handleWicket(event) {
         event.preventDefault();
-        saveStateForUndo();
 
         const newBatsmanName = wicketForm.querySelector("#newBatsmanSelect").value;
         const batsmanOutIndex = parseInt(wicketForm.querySelector("#batsmanOutSelect").value, 10);
         const dismissalType = wicketForm.querySelector("#dismissalTypeSelect").value;
 
-        if (!newBatsmanName) {
+        // Wickets are only final if a new batsman is chosen (for non-run-outs)
+        const isFinalWicket = innings.wickets < 9;
+        if (isFinalWicket && !newBatsmanName) {
             alert("Please select the new batsman.");
             return;
         }
 
+        const newMatchState = structuredClone(state.match);
+        const newInnings = newMatchState.currentInnings;
+
         // Update totals
-        innings.wickets += 1;
+        newInnings.wickets += 1;
         
         // Credit wicket to bowler unless it's a Run Out
         if (dismissalType !== "Run Out") {
-            const bowlerStats = innings.bowlingFigures[innings.currentBowlerName];
+            const bowlerStats = newInnings.bowlingFigures[newInnings.currentBowlerName];
             bowlerStats.wickets += 1;
-            innings.thisOver.push('W');
+            newInnings.thisOver.push('W');
         }
 
         // A ball is always bowled for a wicket
-        const overCompleted = addBall();
+        innings = newInnings; // Temporarily set for addBall
+        addBall();
 
         // Get the batsman who is out
-        const batsmanOut = innings.batsmen[batsmanOutIndex];
+        const batsmanOut = newInnings.batsmen[batsmanOutIndex];
         batsmanOut.dismissal = dismissalType;
-        batsmanOut.scoreAtWicket = innings.score; // Record score at time of wicket
-        innings.outBatsmen.push(batsmanOut); // Move to out list
+        batsmanOut.scoreAtWicket = newInnings.score; // Record score at time of wicket
+        newInnings.outBatsmen.push(batsmanOut); // Move to out list
 
         // Replace the outgoing batsman with the new one
-        innings.batsmen[batsmanOutIndex] = { name: newBatsmanName, runs: 0, balls: 0, dismissal: null };
-        // If the non-striker was run out, the new batsman will be at the non-striker's end. We'll keep it simple for now.
+        if (newBatsmanName) {
+            newInnings.batsmen[batsmanOutIndex] = { name: newBatsmanName, runs: 0, balls: 0, dismissal: null };
+        }
 
         wicketModal.classList.remove("visible");
-        updateFullDisplay();
+        updateState(newMatchState);
     }
 
     function openExtraRunModal(type) {
         extraRunModal.classList.add("visible");
         extraRunModalTitle.textContent = type === 'bye' ? 'Bye Runs' : 'Leg Bye Runs';
 
-        // Temporarily attach event listeners
+        // Attach event listeners, ensuring they are fresh for this context
         extraRunButtons.forEach(button => {
             button.onclick = () => handleByeOrLegBye(type, parseInt(button.dataset.extraRun));
         });
@@ -344,32 +368,35 @@ function setupLiveScoring() {
 
     function handleByeOrLegBye(type, runs) {
         saveStateForUndo();
+        const newMatchState = structuredClone(state.match);
+        const newInnings = newMatchState.currentInnings;
 
         // Update team score
-        innings.score += runs;
-        innings.thisOver.push(`${runs}${type.charAt(0)}b`); // e.g., 1b, 4lb
+        newInnings.score += runs;
+        newInnings.thisOver.push(`${runs}${type.charAt(0)}b`); // e.g., 1b, 4lb
 
+        innings = newInnings; // Temporarily set for helper functions
         // Ball is bowled and counts
         const overCompleted = addBall();
         addBallToBowler();
 
         // Batsman on strike faces the ball, but doesn't get runs
-        const striker = innings.batsmen[innings.strikerIndex];
+        const striker = newInnings.batsmen[newInnings.strikerIndex];
         striker.balls += 1;
 
         // Bowler does not concede these runs
 
         // Change strike for odd runs
         if (runs % 2 !== 0) {
-            innings.strikerIndex = 1 - innings.strikerIndex; // Toggles between 0 and 1
+            newInnings.strikerIndex = 1 - newInnings.strikerIndex; // Toggles between 0 and 1
         }
 
         extraRunModal.classList.remove("visible");
 
+        updateState(newMatchState, false); // History was already saved
+
         if (overCompleted) {
             openNewOverModal();
-        } else {
-            updateFullDisplay();
         }
     }
 
@@ -378,8 +405,8 @@ function setupLiveScoring() {
 
         // Change strike for the new over
         innings.strikerIndex = 1 - innings.strikerIndex;
-        innings.thisOver = []; // Clear for the new over
-
+        innings.thisOver = []; // This is a direct mutation, but it's right before a modal, which is acceptable.
+        
         // Populate new bowler dropdown
         const bowlingTeamPlayers = (match.bowlingTeam === match.team1 ? match.team1Players : match.team2Players).map(p => `${p} (${match.bowlingTeam})`);
         const currentBowlerName = innings.currentBowlerName;
@@ -399,14 +426,18 @@ function setupLiveScoring() {
         const newBowlerName = newBowlerSelect.value;
         if (!newBowlerName) return;
 
-        innings.currentBowlerName = newBowlerName;
+        const newMatchState = structuredClone(state.match);
+        const newInnings = newMatchState.currentInnings;
+
+        newInnings.currentBowlerName = newBowlerName;
         // If this bowler hasn't bowled before, add them to the figures
-        if (!innings.bowlingFigures[newBowlerName]) {
-            innings.bowlingFigures[newBowlerName] = { overs: 0, runs: 0, wickets: 0 };
+        if (!newInnings.bowlingFigures[newBowlerName]) {
+            newInnings.bowlingFigures[newBowlerName] = { overs: 0, runs: 0, wickets: 0 };
         }
 
         newOverModal.classList.remove("visible");
-        updateFullDisplay();
+        // Don't save to history, as changing a bowler is part of the over completion flow
+        updateState(newMatchState, false);
     }
 
     function checkForInningsEnd() {
@@ -449,19 +480,15 @@ function setupLiveScoring() {
     }
 
     function handleUndo() {
-        if (history.length === 0) return; // Nothing to undo
+        if (state.history.length === 0) return; // Nothing to undo
 
-        const previousState = history.pop();
+        const previousState = state.history.pop();
 
-        // Restore the entire match object from the previous state
-        Object.assign(match, previousState);
-        innings = match.currentInnings; // Re-assign innings reference
-
-        updateFullDisplay();
+        updateState(previousState, false); // Restore state without saving to history again
     }
 
     function updateUndoButton() {
-        undoBtn.disabled = history.length === 0;
+        undoBtn.disabled = state.history.length === 0;
     }
 
     // --- Event Listeners ---
